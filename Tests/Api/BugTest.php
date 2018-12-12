@@ -46,6 +46,16 @@ final class BugTest extends \PHPUnit\Framework\TestCase
   ]
 }';
 
+    private $delta_bug_108 = '{
+    "ops":[
+        {"insert":"Wilt u één van bovenstaande punten wijzigen, dan "},
+        {"attributes":{"link":"https://studiekeuze123.test/contact"},"insert":"contactformulier"},
+        {"insert":".  asd\n\nWijzigingen die "},
+        {"attributes":{"color":"#24372e"},"insert":"uiterlijk 20 november 2018 "},
+        {"insert":"bij ons zijn binnengekomen, worden nog verwerkt in release 18.10 op 12 december 2018. Wijzigingen in CROHO (zoals nieuwe opleidingen) dienen ook uiterlijk 20 november door u te zijn ingevoerd om meegenomen te worden in de release van december 2018."}
+    ]
+}';
+
     private $delta_bug_external_3 = '{"ops":[{"insert":"Lorem ipsum\nLorem ipsum\n\nLorem ipsum\n"}]}';
 
     private $expected_bug_101 = "<h1>Hallo</h1>
@@ -54,6 +64,8 @@ final class BugTest extends \PHPUnit\Framework\TestCase
 <strong>Test: Zwei</strong></p>
 <p>https://heartbeat.gmbh</p>
 <p></p>";
+
+    private $expected_bug_108 = '';
 
     private $expected_bug_external_3 = "<p>Lorem ipsum<br />
 Lorem ipsum</p>
@@ -87,7 +99,7 @@ Lorem ipsum</p>
 
     /**
      * Newlines still proving to be an issue
-     * Bug report https://github.com/nadar/quill-delta-parser/issues/3     *
+     * Bug report https://github.com/nadar/quill-delta-parser/issues/3
      *
      * @return void
      * @throws \Exception
@@ -107,6 +119,31 @@ Lorem ipsum</p>
             $this->expected_bug_external_3,
             trim($result),
             __METHOD__ . ' newline issues, no new paragraph'
+        );
+    }
+
+    /**
+     * Issue with links going to a new line
+     * Bug report https://github.com/deanblackborough/php-quill-renderer/issues/108
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testLinksOnANewLine()
+    {
+        $result = null;
+
+        try {
+            $quill = new QuillRender($this->delta_bug_108);
+            $result = $quill->render();
+        } catch (\Exception $e) {
+            $this->fail(__METHOD__ . 'failure, ' . $e->getMessage());
+        }
+
+        $this->assertEquals(
+            $this->expected_bug_108,
+            trim($result),
+            __METHOD__ . ' links appear on their own line'
         );
     }
 }
