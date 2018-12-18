@@ -46,15 +46,8 @@ final class BugTest extends \PHPUnit\Framework\TestCase
   ]
 }';
 
-    private $delta_bug_108 = '{
-    "ops":[
-        {"insert":"Wilt u één van bovenstaande punten wijzigen, dan "},
-        {"attributes":{"link":"https://studiekeuze123.test/contact"},"insert":"contactformulier"},
-        {"insert":".  asd\n\nWijzigingen die "},
-        {"attributes":{"color":"#24372e"},"insert":"uiterlijk 20 november 2018 "},
-        {"insert":"bij ons zijn binnengekomen, worden nog verwerkt in release 18.10 op 12 december 2018. Wijzigingen in CROHO (zoals nieuwe opleidingen) dienen ook uiterlijk 20 november door u te zijn ingevoerd om meegenomen te worden in de release van december 2018."}
-    ]
-}';
+    private $delta_bug_108_within_heading = '{"ops":[{"insert":"This is a heading "},{"attributes":{"link":"https://www.github.com"},"insert":"with a link"},{"insert":"."},{"attributes":{"header":2},"insert":"\n"}]}';
+    private $delta_bug_108_end_of_heading = '{"ops":[{"insert":"This is a heading "},{"attributes":{"link":"https://www.github.com"},"insert":"with a link"},{"attributes":{"header":2},"insert":"\n"}]}';
 
     private $delta_bug_external_3 = '{"ops":[{"insert":"Lorem ipsum\nLorem ipsum\n\nLorem ipsum\n"}]}';
 
@@ -65,7 +58,8 @@ final class BugTest extends \PHPUnit\Framework\TestCase
 <p>https://heartbeat.gmbh</p>
 <p></p>";
 
-    private $expected_bug_108 = '';
+    private $expected_bug_108_within_heading = '<h2>This is a heading <a href="https://www.github.com">with a link</a>.</h2>';
+    private $expected_bug_108_end_of_heading = '<h2>This is a heading <a href="https://www.github.com">with a link</a></h2>';
 
     private $expected_bug_external_3 = "<p>Lorem ipsum<br />
 Lorem ipsum</p>
@@ -123,25 +117,52 @@ Lorem ipsum</p>
     }
 
     /**
-     * Issue with links going to a new line
+     * Issue with links in headers going onto a new line
+     *
      * Bug report https://github.com/deanblackborough/php-quill-renderer/issues/108
      *
      * @return void
      * @throws \Exception
      */
-    public function testLinksOnANewLine()
+    public function testLinkWithinHeaderForcingContentToNewLine()
     {
         $result = null;
 
         try {
-            $quill = new QuillRender($this->delta_bug_108);
+            $quill = new QuillRender($this->delta_bug_108_within_heading);
             $result = $quill->render();
         } catch (\Exception $e) {
             $this->fail(__METHOD__ . 'failure, ' . $e->getMessage());
         }
 
         $this->assertEquals(
-            $this->expected_bug_108,
+            $this->expected_bug_108_within_heading,
+            trim($result),
+            __METHOD__ . ' links appear on their own line'
+        );
+    }
+
+    /**
+     * Issue with links in headers going onto a new line
+     *
+     * Bug report https://github.com/deanblackborough/php-quill-renderer/issues/108
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testLinkAEndOfHeaderForcingContentToNewLine()
+    {
+        $result = null;
+
+        try {
+            $quill = new QuillRender($this->delta_bug_108_end_of_heading);
+            $result = $quill->render();
+        } catch (\Exception $e) {
+            $this->fail(__METHOD__ . 'failure, ' . $e->getMessage());
+        }
+
+        $this->assertEquals(
+            $this->expected_bug_108_end_of_heading,
             trim($result),
             __METHOD__ . ' links appear on their own line'
         );
