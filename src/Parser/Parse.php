@@ -287,6 +287,13 @@ abstract class Parse implements ParserInterface
     public function attributeHeader(array $quill)
     {
         if (in_array($quill['attributes'][OPTIONS::ATTRIBUTE_HEADER], array(1, 2, 3, 4, 5, 6, 7)) === true) {
+
+            // This is the problem, I need to find the insert that is the header, first previous plain
+            // insert and then add all the intervening inserts as children
+
+            // Add children line this $this->deltas[$current_index]->addChild($this->deltas[$i]);
+
+            
             $insert = $this->deltas[count($this->deltas) - 1]->getInsert();
             unset($this->deltas[count($this->deltas) - 1]);
             $this->deltas[] = new $this->class_delta_header($insert, $quill['attributes']);
