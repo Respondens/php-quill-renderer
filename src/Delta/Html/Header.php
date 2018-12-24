@@ -54,7 +54,7 @@ class Header extends Delta
             }
         }
 
-        $html .= "</{$this->tag}>";
+        $html .= "</{$this->tag}>\n";
 
         return $html;
     }

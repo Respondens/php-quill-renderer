@@ -46,7 +46,24 @@ final class BugTest extends \PHPUnit\Framework\TestCase
   ]
 }';
 
-    private $delta_bug_108_within_heading = '{"ops":[{"insert":"This is a heading "},{"attributes":{"link":"https://www.github.com"},"insert":"with a link"},{"insert":"."},{"attributes":{"header":2},"insert":"\n"}]}';
+    private $delta_bug_108_within_heading = '{
+    "ops":[
+        {
+            "insert":"This is a heading "
+        },
+        {
+            "attributes":{"link":"https://www.github.com"},
+            "insert":"with a link"
+        },
+        {
+            "insert":"."
+        },
+        {
+            "attributes":{"header":2},
+            "insert":"\n"
+        }
+    ]
+}';
     private $delta_bug_108_end_of_heading = '{"ops":[{"insert":"This is a heading "},{"attributes":{"link":"https://www.github.com"},"insert":"with a link"},{"attributes":{"header":2},"insert":"\n"}]}';
 
     private $delta_bug_external_3 = '{"ops":[{"insert":"Lorem ipsum\nLorem ipsum\n\nLorem ipsum\n"}]}';

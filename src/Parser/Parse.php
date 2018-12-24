@@ -293,14 +293,21 @@ abstract class Parse implements ParserInterface
 
             // Loop through all previously assigned deltas looking for the heading
             for ($i = (count($this->deltas) - 1); $i >= 0; $i--) {
-                if ($this->deltas[$i]->hasAttributes() === false) {
+
+                if ($i === 0) {
                     $heading_insert = $this->deltas[$i]->getInsert();
                     unset($this->deltas[$i]);
                     break;
-                } else {
-                    $children[] = $this->deltas[$i];
-                    unset($this->deltas[$i]);
                 }
+
+                if ($this->deltas[$i]->newLine() || $this->deltas[$i]->preNewLine()) {
+                    $heading_insert = $this->deltas[$i+1]->getInsert();
+                    unset($this->deltas[$i+1]);
+                    break;
+                }
+
+                $children[] = $this->deltas[$i];
+                unset($this->deltas[$i]);
             }
 
             $this->deltas = array_values($this->deltas);
