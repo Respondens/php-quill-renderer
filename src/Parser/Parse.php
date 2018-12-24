@@ -288,17 +288,31 @@ abstract class Parse implements ParserInterface
     {
         if (in_array($quill['attributes'][OPTIONS::ATTRIBUTE_HEADER], array(1, 2, 3, 4, 5, 6, 7)) === true) {
 
-            // This is the problem, I need to find the insert that is the header, first previous plain
-            // insert and then add all the intervening inserts as children
+            $children = [];
+            $heading_insert = null;
 
-            // Add children line this $this->deltas[$current_index]->addChild($this->deltas[$i]);
+            // Loop through all previously assigned deltas looking for the heading
+            for ($i = (count($this->deltas) - 1); $i >= 0; $i--) {
+                if ($this->deltas[$i]->hasAttributes() === false) {
+                    $heading_insert = $this->deltas[$i]->getInsert();
+                    unset($this->deltas[$i]);
+                    break;
+                } else {
+                    $children[] = $this->deltas[$i];
+                    unset($this->deltas[$i]);
+                }
+            }
 
-            
-            $insert = $this->deltas[count($this->deltas) - 1]->getInsert();
-            unset($this->deltas[count($this->deltas) - 1]);
-            $this->deltas[] = new $this->class_delta_header($insert, $quill['attributes']);
-            // Reorder the array
             $this->deltas = array_values($this->deltas);
+
+            if ($heading_insert !== null) {
+                $this->deltas[] = new $this->class_delta_header($heading_insert, $quill['attributes']);
+                if (count($children) > 0) {
+                    foreach ($children as $child) {
+                        $this->deltas[count($this->deltas) - 1]->addChild($child);
+                    }
+                }
+            }
         }
     }
 

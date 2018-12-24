@@ -63,6 +63,20 @@ abstract class Delta implements DeltaInterface
     }
 
     /**
+     * Does the delta have any attributes
+     *
+     * @return boolean
+     */
+    public function hasAttributes(): bool
+    {
+        if (count($this->attributes) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Does the delta have any children
      *
      * @return boolean
