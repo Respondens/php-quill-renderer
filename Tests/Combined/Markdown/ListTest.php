@@ -1,6 +1,6 @@
 <?php
 
-namespace DBlackborough\Quill\Tests\Composite\Markdown;
+namespace DBlackborough\Quill\Tests\Combined\Markdown;
 
 require __DIR__ . '../../../../vendor/autoload.php';
 

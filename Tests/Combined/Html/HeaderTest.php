@@ -1,6 +1,6 @@
 <?php
 
-namespace DBlackborough\Quill\Tests\Composite\Html;
+namespace DBlackborough\Quill\Tests\Combined\Html;
 
 require __DIR__ . '../../../../vendor/autoload.php';
 
@@ -12,14 +12,14 @@ use DBlackborough\Quill\Render as QuillRender;
 final class HeaderTest extends \PHPUnit\Framework\TestCase
 {
     private $delta_header_then_text = '{"ops":[{"insert":"This is a heading"},{"attributes":{"header":2},"insert":"\n"},{"insert":"\nNow some normal text.\n"}]}';
-    private $delta_header_then_text_then_header = '{"ops":[{"insert":"This is a heading"},{"attributes":{"header":2},"insert":"\n"},{"insert":"\nNow some normal text.\n\nNow another heading"},{"attributes":{"header":1},"insert":"\n"}]}';
+    private $delta_header_then_text_then_header = '{"ops":[{"insert":"Heading"},{"attributes":{"header":2},"insert":"\n"},{"insert":"\nText\n\nHeading"},{"attributes":{"header":2},"insert":"\n"}]}';
 
     private $expected_header_then_text = "<h2>This is a heading</h2>
 <p><br />
 Now some normal text.</p>";
-    private $expected_header_then_text_then_header = "<h2>This is a heading</h2>
-<p>Now some normal text.</p>
-<h1>Now another heading</h1>";
+    private $expected_header_then_text_then_header = "<h2>Heading</h2>
+<p>Text</p>
+<h1>Heading</h1>";
 
     /**
      * Test a heading then plain text
