@@ -85,6 +85,10 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
                             $close = true;
                         }
 
+                        echo 'insert: ' . $sub_inserts[0]['insert'] . PHP_EOL;
+                        echo 'i: '. $i . PHP_EOL;
+                        echo 'splits: '. count($splits) . PHP_EOL . PHP_EOL;
+
                         $inserts[] = [
                             'insert' => $sub_inserts[0]['insert'],
                             'close' => $close,
@@ -310,17 +314,20 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
                 if ($i === 0) {
                     $heading_insert = $this->deltas[$i]->getInsert();
                     unset($this->deltas[$i]);
+                    $this->deltas = array_values($this->deltas);
                     break;
                 }
 
                 if ($this->deltas[$i]->newLine() || $this->deltas[$i]->preNewLine()) {
-                    $heading_insert = $this->deltas[$i+1]->getInsert();
-                    unset($this->deltas[$i+1]);
+                    $heading_insert = $this->deltas[$i]->getInsert();
+                    unset($this->deltas[$i]);
+                    $this->deltas = array_values($this->deltas);
                     break;
                 }
 
                 $children[] = $this->deltas[$i];
                 unset($this->deltas[$i]);
+                $this->deltas = array_values($this->deltas);
             }
 
             $this->deltas = array_values($this->deltas);

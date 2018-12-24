@@ -19,7 +19,7 @@ final class HeaderTest extends \PHPUnit\Framework\TestCase
 Now some normal text.</p>";
     private $expected_header_then_text_then_header = "<h2>Heading</h2>
 <p>Text</p>
-<h1>Heading</h1>";
+<h2>Heading</h2>";
 
     /**
      * Test a heading then plain text

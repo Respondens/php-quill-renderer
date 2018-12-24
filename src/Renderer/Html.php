@@ -42,6 +42,8 @@ class Html extends Render
 
         $block_open = false;
 
+        //var_dump($this->deltas);// die;
+
         foreach ($this->deltas as $i => $delta) {
             if ($delta->displayType() === Delta::DISPLAY_INLINE && $block_open === false) {
                 $block_open = true;
