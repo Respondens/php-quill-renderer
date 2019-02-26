@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Markdown;
 
 /**
@@ -19,7 +17,7 @@ class Link extends Delta
      * @param string $insert
      * @param array $attributes
      */
-    public function __construct(string $insert, array $attributes = [])
+    public function __construct($insert, array $attributes = [])
     {
         $this->insert = $insert;
         $this->attributes = $attributes;
@@ -30,7 +28,7 @@ class Link extends Delta
      *
      * @return string
      */
-    public function render(): string
+    public function render()
     {
         $append = str_replace(trim($this->insert), '', $this->insert);
 

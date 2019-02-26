@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace DBlackborough\Quill\Interfaces;
 
@@ -19,7 +18,7 @@ interface ParserSplitInterface
      *
      * @return array array of inserts, two indexes, insert and close
      */
-    public function splitInsertsOnNewLines($insert): array;
+    public function splitInsertsOnNewLines($insert);
 
     /**
      * Split an insert on a single new line and handle accordingly
@@ -28,5 +27,5 @@ interface ParserSplitInterface
      *
      * @return array array of inserts, three indexes, insert, close and new_line
      */
-    public function splitInsertsOnNewLine($insert): array;
+    public function splitInsertsOnNewLine($insert);
 }

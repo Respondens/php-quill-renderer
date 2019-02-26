@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace DBlackborough\Quill;
 
@@ -30,31 +29,26 @@ class Render
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(string $quill_json, string $format = Options::FORMAT_HTML)
+    public function __construct($quill_json, $format = Options::FORMAT_HTML)
     {
         switch ($format) {
             case Options::FORMAT_GITHUB_MARKDOWN:
                 $this->parser = new Parser\GithubMarkdown();
                 break;
+
             case Options::FORMAT_HTML:
                 $this->parser = new Parser\Html();
                 break;
+
             case Options::FORMAT_MARKDOWN:
                 $this->parser = new Parser\Markdown();
                 break;
+
             default:
-                throw new \InvalidArgumentException(
-                    'Requested $format not supported, formats supported, ' .
-                    implode(
-                        ', ',
-                        [Options::FORMAT_HTML, OPTIONS::FORMAT_MARKDOWN]
-                    )
-                );
+                throw new \InvalidArgumentException('Requested $format not supported, formats supported, ' . implode(', ', [Options::FORMAT_HTML, OPTIONS::FORMAT_MARKDOWN]));
                 break;
         }
-
         $this->format = $format;
-
         try {
             $this->parser->load($quill_json);
         } catch (\InvalidArgumentException $e) {
@@ -71,28 +65,25 @@ class Render
      * @throws \InvalidArgumentException
      * @throws \Exception
      */
-    public function render(bool $trim = false): string
+    public function render($trim = false)
     {
         if ($this->parser->parse() === true) {
             switch ($this->format) {
                 case Options::FORMAT_GITHUB_MARKDOWN:
                     $renderer = new Renderer\GithubMarkdown();
                     break;
+
                 case Options::FORMAT_HTML:
                     $renderer = new Renderer\Html();
                     break;
+
                 case Options::FORMAT_MARKDOWN:
                     $renderer = new Renderer\Markdown();
                     break;
+
                 default:
                     // Shouldn't be possible to get here
-                    throw new \InvalidArgumentException(
-                        'Requested $format not supported, formats supported, ' .
-                        implode(
-                            ', ',
-                            [Options::FORMAT_HTML, OPTIONS::FORMAT_MARKDOWN]
-                        )
-                    );
+                    throw new \InvalidArgumentException('Requested $format not supported, formats supported, ' . implode(', ', [Options::FORMAT_HTML, OPTIONS::FORMAT_MARKDOWN]));
                     break;
             }
 

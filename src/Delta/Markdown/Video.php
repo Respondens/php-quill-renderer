@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Markdown;
 
 /**
@@ -20,7 +18,7 @@ class Video extends Delta
      * @param string $insert
      * @param array $attributes
      */
-    public function __construct(string $insert, array $attributes = [])
+    public function __construct($insert, array $attributes = [])
     {
         $this->insert = $insert;
         $this->attributes = $attributes;
@@ -31,7 +29,7 @@ class Video extends Delta
      *
      * @return string
      */
-    public function render(): string
+    public function render()
     {
         return "![Video]({$this->escape($this->insert)})";
     }

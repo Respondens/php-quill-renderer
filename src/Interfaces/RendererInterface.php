@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace DBlackborough\Quill\Interfaces;
 
@@ -21,7 +20,7 @@ interface RendererInterface
      *
      * @return Render
      */
-    public function load(array $deltas): Render;
+    public function load(array $deltas);
 
     /**
      * Generate the final output string from the Delta[] array
@@ -30,5 +29,5 @@ interface RendererInterface
      *
      * @return string
      */
-    public function render(bool $trim = false): string;
+    public function render($trim = false);
 }

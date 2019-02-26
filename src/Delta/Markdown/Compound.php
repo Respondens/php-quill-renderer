@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Markdown;
 
 use DBlackborough\Quill\Options;
@@ -29,10 +27,9 @@ class Compound extends Delta
      *
      * @param string $insert
      */
-    public function __construct(string $insert)
+    public function __construct($insert)
     {
         $this->insert = $insert;
-
         $this->tokens = [];
     }
 
@@ -44,7 +41,7 @@ class Compound extends Delta
      *
      * @return Compound
      */
-    public function setAttribute($attribute, $value): Compound
+    public function setAttribute($attribute, $value)
     {
         $this->attributes[$attribute] = $value;
 
@@ -54,7 +51,7 @@ class Compound extends Delta
     /**
      * Convert attributes to tokens
      */
-    private function tokens(): void
+    private function tokens()
     {
         foreach ($this->attributes as $attribute => $value) {
             switch ($attribute) {
@@ -77,16 +74,14 @@ class Compound extends Delta
      *
      * @return string
      */
-    public function render(): string
+    public function render()
     {
         $return = '';
-
         $this->tokens();
 
         foreach ($this->tokens as $token) {
             $return .= $token;
         }
-
         $return .= $this->escape($this->insert);
 
         foreach (array_reverse($this->tokens) as $token) {

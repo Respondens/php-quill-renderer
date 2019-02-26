@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\GithubMarkdown;
 
 use DBlackborough\Quill\Delta\Markdown\Delta as MarkdownDelta;
@@ -22,8 +20,8 @@ abstract class Delta extends MarkdownDelta
      *
      * @return string
      */
-    protected function escape(string $insert): string
+    protected function escape($insert)
     {
-        return str_replace(['*', '#', '~'], ['\*', '\#', '\~'], $insert);
+        return str_replace(['*', '#', '~'], ['\\*', '\\#', '\\~'], $insert);
     }
 }
