@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace DBlackborough\Quill\Parser;
 
@@ -46,7 +45,6 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
     public function __construct()
     {
         parent::__construct();
-
         $this->class_delta_bold = Bold::class;
         $this->class_delta_color = Color::class;
         $this->class_delta_header = Header::class;
@@ -66,57 +64,39 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
      *
      * @return array array of inserts, two indexes, insert and close
      */
-    public function splitInsertsOnNewLines($insert): array
+    public function splitInsertsOnNewLines($insert)
     {
         $inserts = [];
-
         if (preg_match("/[\n]{2,}/", $insert) !== 0) {
-            $splits = (preg_split("/[\n]{2,}/", $insert));
+            $splits = preg_split("/[\n]{2,}/", $insert);
             $i = 0;
+
             foreach (preg_split("/[\n]{2,}/", $insert) as $match) {
-
                 $close = false;
-
                 $sub_inserts = $this->splitInsertsOnNewLine($match);
-
                 if (count($sub_inserts) > 0) {
                     if (count($sub_inserts) === 1) {
                         if ($i === 0 || $i !== count($splits) - 1) {
                             $close = true;
                         }
-
-                        $inserts[] = [
-                            'insert' => $sub_inserts[0]['insert'],
-                            'close' => $close,
-                            'new_line' => false,
-                            'pre_new_line' => false
-                        ];
+                        $inserts[] = ['insert' => $sub_inserts[0]['insert'], 'close' => $close, 'new_line' => false, 'pre_new_line' => false];
                     } else {
                         $count = count($sub_inserts);
                         $i = 0;
+
                         foreach ($sub_inserts as $sub_insert) {
-                            $inserts[] = [
-                                'insert' => $sub_insert['insert'],
-                                'close' => (($count - 1) === $i ? true : $sub_insert['close']),
-                                'new_line' => $sub_insert['new_line'],
-                                'pre_new_line' => $sub_insert['pre_new_line']
-                            ];
+                            $inserts[] = ['insert' => $sub_insert['insert'], 'close' => $count - 1 === $i ? true : $sub_insert['close'], 'new_line' => $sub_insert['new_line'], 'pre_new_line' => $sub_insert['pre_new_line']];
                             $i++;
                         }
                     }
                 }
-
                 $i++;
             }
         } else {
             $sub_inserts = $this->splitInsertsOnNewLine($insert);
+
             foreach ($sub_inserts as $sub_insert) {
-                $inserts[] = [
-                    'insert' => $sub_insert['insert'],
-                    'close' => $sub_insert['close'],
-                    'new_line' => $sub_insert['new_line'],
-                    'pre_new_line' => $sub_insert['pre_new_line']
-                ];
+                $inserts[] = ['insert' => $sub_insert['insert'], 'close' => $sub_insert['close'], 'new_line' => $sub_insert['new_line'], 'pre_new_line' => $sub_insert['pre_new_line']];
             }
         }
 
@@ -131,10 +111,9 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
      *
      * @return array array of inserts, three indexes, insert, close and new_line
      */
-    public function splitInsertsOnNewLine($insert): array
+    public function splitInsertsOnNewLine($insert)
     {
         $inserts = [];
-
         if (preg_match("/[\n]{1}/", rtrim($insert, "\n")) !== 0) {
             $matches = preg_split("/[\n]{1}/", rtrim($insert, "\n"));
             $i = 0;
@@ -144,18 +123,13 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
                     $sub_insert = str_replace("\n", '', $match);
                     $new_line = true;
                     $pre_new_line = false;
-                    if ($i === (count($matches) - 1)) {
+                    if ($i === count($matches) - 1) {
                         $new_line = false;
                     }
                     if ($i === 1 && count($inserts) === 0) {
                         $pre_new_line = true;
                     }
-                    $inserts[] = [
-                        'insert' => $sub_insert,
-                        'close' => false,
-                        'new_line' => $new_line,
-                        'pre_new_line' => $pre_new_line
-                    ];
+                    $inserts[] = ['insert' => $sub_insert, 'close' => false, 'new_line' => $new_line, 'pre_new_line' => $pre_new_line];
                 }
                 $i++;
             }
@@ -164,13 +138,7 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
             if (strpos($insert, "\n") !== FALSE) {
                 $new_line = true;
             }
-
-            $inserts[] = [
-                'insert' => str_replace("\n", '', $insert),
-                'close' => false,
-                'new_line' => $new_line,
-                'pre_new_line' => false
-            ];
+            $inserts[] = ['insert' => str_replace("\n", '', $insert), 'close' => false, 'new_line' => $new_line, 'pre_new_line' => false];
         }
 
         return $inserts;
@@ -189,9 +157,7 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
         if (in_array($quill['attributes'][OPTIONS::ATTRIBUTE_LIST], array('ordered', 'bullet')) === true) {
             $insert = $this->deltas[count($this->deltas) - 1]->getInsert();
             $attributes = $this->deltas[count($this->deltas) - 1]->getAttributes();
-
             unset($this->deltas[count($this->deltas) - 1]);
-
             if (count($attributes) === 0) {
                 $this->deltas[] = new ListItem($insert, $quill['attributes']);
             } else {
@@ -238,29 +204,20 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
                 }
                 $this->deltas[] = $delta;
             }
-
             $this->deltas = array_values($this->deltas);
-
             $current_index = count($this->deltas) - 1;
-
             for ($i = $current_index - 1; $i >= 0; $i--) {
                 $this_delta = $this->deltas[$i];
-                if (
-                    $this_delta->displayType() === Delta::DISPLAY_BLOCK ||
-                    $this_delta->newLine() === true ||
-                    $this_delta->close() === true
-                ) {
+                if ($this_delta->displayType() === Delta::DISPLAY_BLOCK || $this_delta->newLine() === true || $this_delta->close() === true) {
                     break;
                 } else {
                     $this->deltas[$current_index]->addChild($this->deltas[$i]);
                     unset($this->deltas[$i]);
                 }
             }
-
             $this->deltas = array_values($this->deltas);
             $current_index = count($this->deltas) - 1;
-            $previous_index = $current_index -1;
-
+            $previous_index = $current_index - 1;
             if ($previous_index < 0) {
                 $this->deltas[$current_index]->setFirstChild();
                 $this->deltas[$current_index]->setLastChild();
@@ -338,10 +295,10 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
             } else {
                 $delta = new CompoundImage($quill['insert']['image']);
             }
+
             foreach ($quill['attributes'] as $attribute => $value) {
                 $delta->setAttribute($attribute, $value);
             }
-
             $this->deltas[] = $delta;
         }
     }
@@ -369,7 +326,6 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
             if (array_key_exists('pre_new_line', $insert) === true && $insert['pre_new_line'] === true) {
                 $delta->setPreNewLine();
             }
-
             $this->deltas[] = $delta;
         }
     }

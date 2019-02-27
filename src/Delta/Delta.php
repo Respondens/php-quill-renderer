@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta;
 
 use DBlackborough\Quill\Interfaces\DeltaInterface;
@@ -47,7 +45,7 @@ abstract class Delta implements DeltaInterface
      *
      * @return void
      */
-    public function addChild(Delta $delta): void
+    public function addChild(Delta $delta)
     {
         $this->children[] = $delta;
     }
@@ -57,7 +55,7 @@ abstract class Delta implements DeltaInterface
      *
      * @return Delta[]
      */
-    public function children(): array
+    public function children()
     {
         return array_reverse($this->children);
     }
@@ -67,7 +65,7 @@ abstract class Delta implements DeltaInterface
      *
      * @return boolean
      */
-    public function hasChildren(): bool
+    public function hasChildren()
     {
         if (count($this->children) > 0) {
             return true;
@@ -81,7 +79,7 @@ abstract class Delta implements DeltaInterface
      *
      * @return boolean
      */
-    public function isChild(): bool
+    public function isChild()
     {
         return false;
     }
@@ -91,7 +89,7 @@ abstract class Delta implements DeltaInterface
      *
      * @return boolean
      */
-    public function isFirstChild(): bool
+    public function isFirstChild()
     {
         return $this->is_first_child;
     }
@@ -101,7 +99,7 @@ abstract class Delta implements DeltaInterface
      *
      * @return boolean
      */
-    public function isLastChild(): bool
+    public function isLastChild()
     {
         return $this->is_last_child;
     }
@@ -111,7 +109,7 @@ abstract class Delta implements DeltaInterface
      *
      * @return array
      */
-    public function getAttributes(): array
+    public function getAttributes()
     {
         return $this->attributes;
     }
@@ -121,7 +119,7 @@ abstract class Delta implements DeltaInterface
      *
      * @return string
      */
-    public function getInsert(): string
+    public function getInsert()
     {
         return $this->insert;
     }
@@ -132,7 +130,7 @@ abstract class Delta implements DeltaInterface
      *
      * @return string
      */
-    abstract public function render(): string;
+    public abstract function render();
 
     /**
      * Set the current delta to be the first child, alternatively,
@@ -142,7 +140,7 @@ abstract class Delta implements DeltaInterface
      *
      * @return Delta
      */
-    public function setFirstChild(bool $value = true): Delta
+    public function setFirstChild($value = true)
     {
         $this->is_first_child = $value;
 
@@ -157,7 +155,7 @@ abstract class Delta implements DeltaInterface
      *
      * @return Delta
      */
-    public function setLastChild(bool $value = true): Delta
+    public function setLastChild($value = true)
     {
         $this->is_last_child = $value;
 
@@ -171,5 +169,5 @@ abstract class Delta implements DeltaInterface
      *
      * @return string
      */
-    abstract protected function escape(string $insert): string;
+    protected abstract function escape($insert);
 }

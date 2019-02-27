@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace DBlackborough\Quill\Parser;
 
@@ -52,13 +51,21 @@ abstract class Parse implements ParserInterface
     protected $valid = false;
 
     protected $class_delta_bold;
+
     protected $class_delta_color;
+
     protected $class_delta_header;
+
     protected $class_delta_image;
+
     protected $class_delta_insert;
+
     protected $class_delta_italic;
+
     protected $class_delta_link;
+
     protected $class_delta_strike;
+
     protected $class_delta_video;
 
     /**
@@ -78,13 +85,13 @@ abstract class Parse implements ParserInterface
      * @return Parse
      * @throws \InvalidArgumentException Throws an exception if there was an error decoding the json
      */
-    public function load(string $quill_json): Parse
+    public function load($quill_json)
     {
         $this->quill_json = json_decode($quill_json, true);
-
         if (is_array($this->quill_json) === true && count($this->quill_json) > 0) {
             $this->valid = true;
             $this->deltas = [];
+
             return $this;
         } else {
             throw new \InvalidArgumentException('Unable to decode the json');
@@ -101,20 +108,19 @@ abstract class Parse implements ParserInterface
      * @return Parse
      * @throws \InvalidArgumentException Throws an exception if there was an error decoding the json
      */
-    public function loadMultiple(array $quill_json): Parse
+    public function loadMultiple(array $quill_json)
     {
         $this->deltas_stack = [];
 
         foreach ($quill_json as $index => $json) {
             $json_stack_value = json_decode($json, true);
-
             if (is_array($json_stack_value) === true && count($json_stack_value) > 0) {
                 $this->quill_json_stack[$index] = $json_stack_value;
             }
         }
-
         if (count($quill_json) === count($this->quill_json_stack)) {
             $this->valid = true;
+
             return $this;
         } else {
             throw new \InvalidArgumentException('Unable to decode all the json and assign to the stack');
@@ -126,21 +132,14 @@ abstract class Parse implements ParserInterface
      *
      * @return boolean
      */
-    public function parse(): bool
+    public function parse()
     {
-        if (
-            $this->valid === true &&
-            array_key_exists('ops', $this->quill_json) === true
-        ) {
+        if ($this->valid === true && array_key_exists('ops', $this->quill_json) === true) {
             $this->quill_json = $this->quill_json['ops'];
 
             foreach ($this->quill_json as $quill) {
-
                 if ($quill['insert'] !== null) {
-                    if (
-                        array_key_exists('attributes', $quill) === true &&
-                        is_array($quill['attributes']) === true
-                    ) {
+                    if (array_key_exists('attributes', $quill) === true && is_array($quill['attributes']) === true) {
                         if (count($quill['attributes']) === 1) {
                             foreach ($quill['attributes'] as $attribute => $value) {
                                 switch ($attribute) {
@@ -195,14 +194,17 @@ abstract class Parse implements ParserInterface
                             if (is_array($quill['insert']) === true) {
                                 if (array_key_exists('image', $quill['insert']) === true) {
                                     $this->image($quill);
-                                } else if (array_key_exists('video', $quill['insert']) === true) {
-                                    $this->video($quill);
+                                } else {
+                                    if (array_key_exists('video', $quill['insert']) === true) {
+                                        $this->video($quill);
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+
             return true;
         } else {
             return false;
@@ -215,9 +217,10 @@ abstract class Parse implements ParserInterface
      *
      * @return boolean
      */
-    public function parseMultiple(): bool
+    public function parseMultiple()
     {
         $results = [];
+
         foreach ($this->quill_json_stack as $index => $quill_json) {
             $this->quill_json = $quill_json;
             $this->deltas = [];
@@ -226,7 +229,6 @@ abstract class Parse implements ParserInterface
                 $this->deltas_stack[$index] = $this->deltas();
             }
         }
-
         if (in_array(false, $results) === false) {
             return true;
         } else {
@@ -239,7 +241,7 @@ abstract class Parse implements ParserInterface
      *
      * @return array
      */
-    public function deltas(): array
+    public function deltas()
     {
         return $this->deltas;
     }
@@ -252,14 +254,12 @@ abstract class Parse implements ParserInterface
      * @return array
      * @throws \OutOfRangeException
      */
-    public function deltasByIndex(string $index): array
+    public function deltasByIndex($index)
     {
         if (array_key_exists($index, $this->deltas_stack) === true) {
             return $this->deltas_stack[$index];
         } else {
-            throw new \OutOfRangeException(
-                'Deltas array does not exist for the given index: ' . $index
-            );
+            throw new \OutOfRangeException('Deltas array does not exist for the given index: ' . $index);
         }
     }
 
@@ -319,10 +319,7 @@ abstract class Parse implements ParserInterface
     public function attributeLink(array $quill)
     {
         if (strlen($quill['attributes'][OPTIONS::ATTRIBUTE_LINK]) > 0) {
-            $this->deltas[] = new $this->class_delta_link(
-                $quill['insert'],
-                $quill['attributes']
-            );
+            $this->deltas[] = new $this->class_delta_link($quill['insert'], $quill['attributes']);
         }
     }
 

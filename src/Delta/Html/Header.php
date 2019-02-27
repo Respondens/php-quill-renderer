@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Html;
 
 use DBlackborough\Quill\Options;
@@ -21,11 +19,10 @@ class Header extends Delta
      * @param string $insert
      * @param array $attributes
      */
-    public function __construct(string $insert, array $attributes = [])
+    public function __construct($insert, array $attributes = [])
     {
         $this->insert = $insert;
         $this->attributes = $attributes;
-
         $this->tag = Options::HTML_TAG_HEADER . $this->attributes['header'];
     }
 
@@ -34,7 +31,7 @@ class Header extends Delta
      *
      * @return string
      */
-    public function displayType(): string
+    public function displayType()
     {
         return parent::DISPLAY_BLOCK;
     }
@@ -44,7 +41,7 @@ class Header extends Delta
      *
      * @return string
      */
-    public function render(): string
+    public function render()
     {
         return $this->renderSimpleTag($this->tag, $this->escape($this->insert), true);
     }

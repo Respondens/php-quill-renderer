@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Html;
 
 /**
@@ -19,11 +17,10 @@ class Link extends Delta
      * @param string $insert
      * @param array $attributes
      */
-    public function __construct(string $insert, array $attributes = [])
+    public function __construct($insert, array $attributes = [])
     {
         $this->insert = $insert;
         $this->attributes = $attributes;
-
         $this->tag = 'a';
     }
 
@@ -32,7 +29,7 @@ class Link extends Delta
      *
      * @return string
      */
-    public function render(): string
+    public function render()
     {
         return "<{$this->tag} href=\"{$this->attributes['link']}\">{$this->escape($this->insert)}</{$this->tag}>";
     }

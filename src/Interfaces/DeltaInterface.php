@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Interfaces;
 
 use DBlackborough\Quill\Delta\Delta;
@@ -13,7 +11,7 @@ use DBlackborough\Quill\Delta\Delta;
  * @copyright Dean Blackborough
  * @license https://github.com/deanblackborough/php-quill-renderer/blob/master/LICENSE
  */
-Interface DeltaInterface
+interface DeltaInterface
 {
     /**
      * Add a child delta
@@ -22,56 +20,56 @@ Interface DeltaInterface
      *
      * @return void
      */
-    public function addChild(Delta $delta): void;
+    public function addChild(Delta $delta);
 
     /**
      * Return the child deltas
      *
      * @return Delta[]
      */
-    public function children(): array;
+    public function children();
 
     /**
      * Does the delta have any children
      *
      * @return boolean
      */
-    public function hasChildren(): bool;
+    public function hasChildren();
 
     /**
      * Is the delta a child?
      *
      * @return boolean
      */
-    public function isChild(): bool;
+    public function isChild();
 
     /**
      * If the delta is a child, is it the first child?
      *
      * @return boolean
      */
-    public function isFirstChild(): bool;
+    public function isFirstChild();
 
     /**
      * If the delta is a child, is it the last child?
      *
      * @return boolean
      */
-    public function isLastChild(): bool;
+    public function isLastChild();
 
     /**
      * Return the plain insert string prior to any parsing
      *
      * @return string
      */
-    public function getInsert(): string;
+    public function getInsert();
 
     /**
      * Render and return the string for the insert ready for renderer
      *
      * @return string
      */
-    public function render(): string;
+    public function render();
 
     /**
      * Set the current delta to be the first child, alternatively,
@@ -81,7 +79,7 @@ Interface DeltaInterface
      *
      * @return Delta
      */
-    public function setFirstChild(bool $value = true): Delta;
+    public function setFirstChild($value = true);
 
     /**
      * Set the current delta to be the last child, alternatively,
@@ -91,5 +89,5 @@ Interface DeltaInterface
      *
      * @return Delta
      */
-    public function setLastChild(bool $value = true): Delta;
+    public function setLastChild($value = true);
 }

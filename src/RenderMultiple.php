@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace DBlackborough\Quill;
 
@@ -31,25 +30,21 @@ class RenderMultiple
      *
      * @throws \Exception
      */
-    public function __construct(array $quill_json, string $format = Options::FORMAT_HTML)
+    public function __construct(array $quill_json, $format = Options::FORMAT_HTML)
     {
         switch ($format) {
             case Options::FORMAT_HTML:
                 $this->parser = new Parser\Html();
                 break;
+
             default:
-                throw new \InvalidArgumentException(
-                    'Requested $format not supported, formats supported, ' .
-                    Options::FORMAT_HTML
-                );
+                throw new \InvalidArgumentException('Requested $format not supported, formats supported, ' . Options::FORMAT_HTML);
                 break;
         }
-
         $this->format = $format;
-
         try {
             $this->parser->loadMultiple($quill_json);
-        } catch (\InvalidArgumentException $e){
+        } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException($e->getMessage());
         }
     }
@@ -65,23 +60,19 @@ class RenderMultiple
      * @throws \BadMethodCallException
      * @throws \OutOfRangeException
      */
-    public function render(string $index, bool $trim = false): string
+    public function render($index, $trim = false)
     {
         if ($this->parser->parseMultiple() !== true) {
             throw new \Exception('Failed to parse the supplied $quill_json arrays');
         }
-
         $deltas = $this->parser->deltasByIndex($index);
-
         switch ($this->format) {
             case Options::FORMAT_HTML:
                 $renderer = new Renderer\Html();
                 break;
+
             default:
-                throw new \InvalidArgumentException(
-                    'Requested $format not supported, formats supported, ' .
-                    Options::FORMAT_HTML
-                );
+                throw new \InvalidArgumentException('Requested $format not supported, formats supported, ' . Options::FORMAT_HTML);
                 break;
         }
 

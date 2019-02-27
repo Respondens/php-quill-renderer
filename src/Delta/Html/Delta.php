@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Html;
 
 use DBlackborough\Quill\Delta\Delta as BaseDelta;
@@ -15,8 +13,9 @@ use DBlackborough\Quill\Delta\Delta as BaseDelta;
  */
 abstract class Delta extends BaseDelta
 {
-    public CONST DISPLAY_BLOCK = 'block';
-    public CONST DISPLAY_INLINE = 'inline';
+    public const DISPLAY_BLOCK = 'block';
+
+    public const DISPLAY_INLINE = 'inline';
 
     private $pre_new_line = false;
 
@@ -40,7 +39,7 @@ abstract class Delta extends BaseDelta
      *
      * @return boolean
      */
-    public function close(): bool
+    public function close()
     {
         return $this->close;
     }
@@ -51,7 +50,7 @@ abstract class Delta extends BaseDelta
      *
      * @return string
      */
-    public function displayType(): string
+    public function displayType()
     {
         return self::DISPLAY_INLINE;
     }
@@ -61,7 +60,7 @@ abstract class Delta extends BaseDelta
      *
      * @return boolean
      */
-    public function newLine(): bool
+    public function newLine()
     {
         return $this->new_line;
     }
@@ -71,7 +70,7 @@ abstract class Delta extends BaseDelta
      *
      * @return string|null
      */
-    public function parentTag(): ?string
+    public function parentTag()
     {
         return null;
     }
@@ -81,7 +80,7 @@ abstract class Delta extends BaseDelta
      *
      * @return boolean
      */
-    public function preNewLine(): bool
+    public function preNewLine()
     {
         return $this->pre_new_line;
     }
@@ -103,7 +102,7 @@ abstract class Delta extends BaseDelta
      *
      * @return Delta
      */
-    public function setNewLine(bool $value = true): Delta
+    public function setNewLine($value = true)
     {
         $this->new_line = $value;
 
@@ -117,7 +116,7 @@ abstract class Delta extends BaseDelta
      *
      * @return Delta
      */
-    public function setPreNewLine(bool $value = true): Delta
+    public function setPreNewLine($value = true)
     {
         $this->pre_new_line = $value;
 
@@ -133,7 +132,7 @@ abstract class Delta extends BaseDelta
      *
      * @return string
      */
-    protected function renderSimpleTag($tag, $insert, $new_line = false): string
+    protected function renderSimpleTag($tag, $insert, $new_line = false)
     {
         return "<{$tag}>{$insert}</{$tag}>" . ($new_line === true ? "\n" : null);
     }
@@ -145,7 +144,7 @@ abstract class Delta extends BaseDelta
      *
      * @return string
      */
-    protected function escape(string $insert): string
+    protected function escape($insert)
     {
         return htmlspecialchars($insert, ENT_COMPAT, 'UTF-8');
     }
