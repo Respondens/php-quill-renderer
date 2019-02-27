@@ -13,9 +13,9 @@ use DBlackborough\Quill\Delta\Delta as BaseDelta;
  */
 abstract class Delta extends BaseDelta
 {
-    public const DISPLAY_BLOCK = 'block';
+    const DISPLAY_BLOCK = 'block';
 
-    public const DISPLAY_INLINE = 'inline';
+    const DISPLAY_INLINE = 'inline';
 
     private $pre_new_line = false;
 

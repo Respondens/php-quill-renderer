@@ -11,66 +11,66 @@ namespace DBlackborough\Quill;
  */
 class Options
 {
-    public const FORMAT_HTML = 'HTML';
+    const FORMAT_HTML = 'HTML';
 
-    public const FORMAT_MARKDOWN = 'Markdown';
+    const FORMAT_MARKDOWN = 'Markdown';
 
-    public const FORMAT_GITHUB_MARKDOWN = 'GithubMarkdown';
+    const FORMAT_GITHUB_MARKDOWN = 'GithubMarkdown';
 
     // Github flavoured markdown
-    public const GITHUB_MARKDOWN_TOKEN_STRIKE = '~~';
+    const GITHUB_MARKDOWN_TOKEN_STRIKE = '~~';
 
-    public const HTML_TAG_BOLD = 'strong';
+    const HTML_TAG_BOLD = 'strong';
 
-    public const HTML_TAG_HEADER = 'h';
+    const HTML_TAG_HEADER = 'h';
 
-    public const HTML_TAG_ITALIC = 'em';
+    const HTML_TAG_ITALIC = 'em';
 
-    public const HTML_TAG_LIST_ITEM = 'li';
+    const HTML_TAG_LIST_ITEM = 'li';
 
-    public const HTML_TAG_STRIKE = 's';
+    const HTML_TAG_STRIKE = 's';
 
-    public const HTML_TAG_SUB_SCRIPT = 'sub';
+    const HTML_TAG_SUB_SCRIPT = 'sub';
 
-    public const HTML_TAG_SUPER_SCRIPT = 'sup';
+    const HTML_TAG_SUPER_SCRIPT = 'sup';
 
-    public const HTML_TAG_UNDERLINE = 'u';
+    const HTML_TAG_UNDERLINE = 'u';
 
-    public const MARKDOWN_TOKEN_BOLD = '**';
+    const MARKDOWN_TOKEN_BOLD = '**';
 
-    public const MARKDOWN_TOKEN_HEADER = '#';
+    const MARKDOWN_TOKEN_HEADER = '#';
 
-    public const MARKDOWN_TOKEN_ITALIC = '*';
+    const MARKDOWN_TOKEN_ITALIC = '*';
 
-    public const MARKDOWN_TOKEN_LIST_ITEM_UNORDERED = '* ';
+    const MARKDOWN_TOKEN_LIST_ITEM_UNORDERED = '* ';
 
-    public const HTML_TAG_LIST_ORDERED = 'ol';
+    const HTML_TAG_LIST_ORDERED = 'ol';
 
-    public const HTML_TAG_LIST_UNORDERED = 'ul';
+    const HTML_TAG_LIST_UNORDERED = 'ul';
 
-    public const ATTRIBUTE_BOLD = 'bold';
+    const ATTRIBUTE_BOLD = 'bold';
 
-    public const ATTRIBUTE_COLOR = 'color';
+    const ATTRIBUTE_COLOR = 'color';
 
-    public const ATTRIBUTE_HEADER = 'header';
+    const ATTRIBUTE_HEADER = 'header';
 
-    public const ATTRIBUTE_ITALIC = 'italic';
+    const ATTRIBUTE_ITALIC = 'italic';
 
-    public const ATTRIBUTE_LINK = 'link';
+    const ATTRIBUTE_LINK = 'link';
 
-    public const ATTRIBUTE_LIST = 'list';
+    const ATTRIBUTE_LIST = 'list';
 
-    public const ATTRIBUTE_LIST_ORDERED = 'ordered';
+    const ATTRIBUTE_LIST_ORDERED = 'ordered';
 
-    public const ATTRIBUTE_LIST_BULLET = 'bullet';
+    const ATTRIBUTE_LIST_BULLET = 'bullet';
 
-    public const ATTRIBUTE_SCRIPT = 'script';
+    const ATTRIBUTE_SCRIPT = 'script';
 
-    public const ATTRIBUTE_SCRIPT_SUB = 'sub';
+    const ATTRIBUTE_SCRIPT_SUB = 'sub';
 
-    public const ATTRIBUTE_SCRIPT_SUPER = 'super';
+    const ATTRIBUTE_SCRIPT_SUPER = 'super';
 
-    public const ATTRIBUTE_STRIKE = 'strike';
+    const ATTRIBUTE_STRIKE = 'strike';
 
-    public const ATTRIBUTE_UNDERLINE = 'underline';
+    const ATTRIBUTE_UNDERLINE = 'underline';
 }
