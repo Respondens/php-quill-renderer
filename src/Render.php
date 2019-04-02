@@ -25,11 +25,12 @@ class Render
      * Renderer constructor, pass in the $quill_json string and set the requested output format
      *
      * @param string $quill_json
-     * @param string $format Requested output format
+     * @param string $format           Requested output format
+     * @param bool   $allow_soft_enter Optional, default true
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($quill_json, $format = Options::FORMAT_HTML)
+    public function __construct($quill_json, $format = Options::FORMAT_HTML, $allow_soft_enter = true)
     {
         switch ($format) {
             case Options::FORMAT_GITHUB_MARKDOWN:
@@ -37,7 +38,7 @@ class Render
                 break;
 
             case Options::FORMAT_HTML:
-                $this->parser = new Parser\Html();
+                $this->parser = new Parser\Html($allow_soft_enter);
                 break;
 
             case Options::FORMAT_MARKDOWN:
