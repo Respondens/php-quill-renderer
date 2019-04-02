@@ -38,13 +38,21 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
      * @var Delta[]
      */
     protected $deltas;
+    
+    /** @var bool */
+    private $allow_soft_enter;
 
     /**
      * Constructor.
+     *
+     * @param bool $allow_soft_enter Optional, default true
      */
-    public function __construct()
+    public function __construct($allow_soft_enter = true)
     {
         parent::__construct();
+        
+        $this->allow_soft_enter = $allow_soft_enter;
+        
         $this->class_delta_bold = Bold::class;
         $this->class_delta_color = Color::class;
         $this->class_delta_header = Header::class;
@@ -67,11 +75,20 @@ class Html extends Parse implements ParserSplitInterface, ParserAttributeInterfa
     public function splitInsertsOnNewLines($insert)
     {
         $inserts = [];
-        if (preg_match("/[\n]{2,}/", $insert) !== 0) {
-            $splits = preg_split("/[\n]{2,}/", $insert);
+        
+        $doubleEndOfLinePattern = "/[\n]{2,}/";
+        $singleEndOfLinePattern = "/[\n]+/";
+        
+        $end_of_line_pattern = $doubleEndOfLinePattern;
+        if ($this->allow_soft_enter === false) {
+            $end_of_line_pattern = $singleEndOfLinePattern;
+        }
+        
+        if (preg_match($end_of_line_pattern, $insert) !== 0) {
+            $splits = preg_split($end_of_line_pattern, $insert);
             $i = 0;
 
-            foreach (preg_split("/[\n]{2,}/", $insert) as $match) {
+            foreach (preg_split($end_of_line_pattern, $insert) as $match) {
                 $close = false;
                 $sub_inserts = $this->splitInsertsOnNewLine($match);
                 if (count($sub_inserts) > 0) {
