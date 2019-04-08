@@ -43,6 +43,15 @@ class Header extends Delta
      */
     public function render()
     {
-        return $this->renderSimpleTag($this->tag, $this->escape($this->insert), true);
+        $html = "<{$this->tag}>";
+        if ($this->hasChildren() === true) {
+
+            foreach ($this->children() as $child) {
+                $html .= $child->render();
+            }
+        }
+        $html .= "{$this->escape($this->insert)}</{$this->tag}>\n";
+
+        return $html;
     }
 }

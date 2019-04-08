@@ -22,7 +22,8 @@ class Render
     private $format;
 
     /**
-     * Renderer constructor, pass in the $quill_json string and set the requested output format
+     * Renderer constructor, pass in the $quill_json string and set the requested
+     * output format
      *
      * @param string $quill_json
      * @param string $format Requested output format
@@ -91,5 +92,15 @@ class Render
         } else {
             throw new \Exception('Failed to parse the supplied $quill_json array');
         }
+    }
+
+    /**
+     * Return the generated deltas array
+     *
+     * @return array|null
+     */
+    public function deltas(): ?array
+    {
+        return $this->parser->deltas();
     }
 }
