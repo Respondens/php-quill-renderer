@@ -99,7 +99,7 @@ class Render
      *
      * @return array|null
      */
-    public function deltas(): ?array
+    public function deltas()
     {
         return $this->parser->deltas();
     }

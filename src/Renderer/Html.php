@@ -41,10 +41,7 @@ class Html extends Render
         $block_open = false;
 
         foreach ($this->deltas as $i => $delta) {
-            if (
-                $delta->displayType() === Delta::DISPLAY_INLINE &&
-                $block_open === false
-            ) {
+            if ($delta->displayType() === Delta::DISPLAY_INLINE && $block_open === false) {
                 $block_open = true;
                 $this->output .= '<p>';
             }
@@ -55,24 +52,12 @@ class Html extends Render
                 }
                 $this->output .= '<' . $delta->parentTag() . ">\n";
             }
-
-            if (
-                $delta->displayType() === Delta::DISPLAY_BLOCK &&
-                $block_open === true
-            ) {
+            if ($delta->displayType() === Delta::DISPLAY_BLOCK && $block_open === true) {
                 $block_open = false;
                 $this->output .= "</p>\n";
             }
-
             $this->output .= $delta->render();
-
-            if (
-                $delta->displayType() === Delta::DISPLAY_INLINE &&
-                (
-                    $block_open === true &&
-                    $delta->close() === true
-                )
-            ) {
+            if ($delta->displayType() === Delta::DISPLAY_INLINE && ($block_open === true && $delta->close() === true)) {
                 $this->output .= "</p>\n";
                 $block_open = false;
             }

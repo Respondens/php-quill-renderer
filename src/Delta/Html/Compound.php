@@ -113,16 +113,14 @@ class Compound extends Delta
     public function render()
     {
         $this->tags();
-
         if ($this->isLink === true) {
             $this->html .= "<a href=\"{$this->link}\">";
         }
-
         $element_attributes = '';
 
         foreach ($this->element_attributes as $attribute => $value) {
             if ($attribute == "color") {
-                $element_attributes .= "style=\"{$attribute}: $value\"";
+                $element_attributes .= "style=\"{$attribute}: {$value}\"";
             } else {
                 $element_attributes .= "{$attribute}=\"{$value}\" ";
             }
@@ -140,7 +138,6 @@ class Compound extends Delta
         foreach (array_reverse($this->tags) as $tag) {
             $this->html .= "</{$tag}>";
         }
-
         if ($this->isLink === true) {
             $this->html .= '</a>';
         }
@@ -154,15 +151,12 @@ class Compound extends Delta
      *
      * @return array
      */
-    public function getAttributes(): array
+    public function getAttributes()
     {
         if ($this->isLink === false) {
             return $this->attributes;
         } else {
-            return array_merge(
-                ['link' => $this->link],
-                $this->attributes
-            );
+            return array_merge(['link' => $this->link], $this->attributes);
         }
     }
 }

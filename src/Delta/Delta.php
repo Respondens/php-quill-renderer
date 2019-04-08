@@ -79,7 +79,7 @@ abstract class Delta implements DeltaInterface
      *
      * @return boolean
      */
-    public function hasAttributes(): bool
+    public function hasAttributes()
     {
         if (count($this->attributes) > 0) {
             return true;
@@ -181,7 +181,7 @@ abstract class Delta implements DeltaInterface
      *
      * @param string $insert
      */
-    public function setInsert(string $insert)
+    public function setInsert($insert)
     {
         $this->insert = $insert;
     }

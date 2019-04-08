@@ -136,38 +136,28 @@ abstract class Parse implements ParserInterface, ParserAttributeInterface
      *
      * @return array
      */
-    public function splitInsertsByNewline(array $inserts): array
+    public function splitInsertsByNewline(array $inserts)
     {
         $new_deltas = [];
 
         foreach ($inserts as $insert) {
-
             if ($insert['insert'] !== null) {
-
                 // Check to see if we are dealing with a media based insert
                 if (is_array($insert['insert']) === false) {
-
                     // We only want to split if there are no attributes
                     if (array_key_exists('attributes', $insert) === false) {
-
                         // First check for multiple newlines
                         if (preg_match("/[\n]{2,}/", $insert['insert']) !== 0) {
-
                             $multiple_matches = preg_split("/[\n]{2,}/", $insert['insert']);
 
                             foreach ($multiple_matches as $k => $match) {
-
                                 $newlines = true;
                                 if ($k === count($multiple_matches) - 1) {
                                     $newlines = false;
                                 }
-
                                 // Now check for single new matches
                                 if (preg_match("/[\n]{1}/", $match) !== 0) {
-                                    $new_deltas = array_merge(
-                                        $new_deltas,
-                                        $this->splitOnSingleNewlineOccurrences($match, $newlines)
-                                    );
+                                    $new_deltas = array_merge($new_deltas, $this->splitOnSingleNewlineOccurrences($match, $newlines));
                                 } else {
                                     $new_deltas[] = ['insert' => $match . ($newlines === true ? "\n\n" : null)];
                                 }
@@ -175,10 +165,7 @@ abstract class Parse implements ParserInterface, ParserAttributeInterface
                         } else {
                             // No multiple newlines detected, check for single new line matches
                             if (preg_match("/[\n]{1}/", $insert['insert']) !== 0) {
-                                $new_deltas = array_merge(
-                                    $new_deltas,
-                                    $this->splitOnSingleNewlineOccurrences($insert['insert'])
-                                );
+                                $new_deltas = array_merge($new_deltas, $this->splitOnSingleNewlineOccurrences($insert['insert']));
                             } else {
                                 $new_deltas[] = $insert;
                             }
@@ -205,27 +192,21 @@ abstract class Parse implements ParserInterface, ParserAttributeInterface
      *
      * @return array
      */
-    public function splitOnSingleNewlineOccurrences(string $insert, bool $newlines = false): array
+    public function splitOnSingleNewlineOccurrences($insert, $newlines = false)
     {
         $new_deltas = [];
-
         $single_matches = preg_split("/[\n]{1,}/", $insert);
 
         foreach ($single_matches as $k => $sub_match) {
-
             $final_append = null;
             if ($k === count($single_matches) - 1 && $newlines === true) {
                 $final_append = "\n\n";
             }
-
             $append = null;
             if ($k !== count($single_matches) - 1) {
                 $append = "\n";
             }
-
-            $new_deltas[] = [
-                'insert' => $sub_match . ($final_append !== null ? $final_append : $append)
-            ];
+            $new_deltas[] = ['insert' => $sub_match . ($final_append !== null ? $final_append : $append)];
         }
 
         return $new_deltas;
@@ -238,10 +219,7 @@ abstract class Parse implements ParserInterface, ParserAttributeInterface
      */
     public function parse()
     {
-        if (
-            $this->valid === true &&
-            array_key_exists('ops', $this->quill_json) === true
-        ) {
+        if ($this->valid === true && array_key_exists('ops', $this->quill_json) === true) {
             /**
              * Before processing through the deltas, generate new deltas by splliting
              * on all new lines, will make it much simpler to work out which
@@ -398,18 +376,10 @@ abstract class Parse implements ParserInterface, ParserAttributeInterface
      */
     public function attributeHeader(array $quill)
     {
-        if (
-            in_array(
-                $quill['attributes'][OPTIONS::ATTRIBUTE_HEADER],
-                array(1, 2, 3, 4, 5, 6, 7)
-            ) === true
-        ) {
+        if (in_array($quill['attributes'][OPTIONS::ATTRIBUTE_HEADER], array(1, 2, 3, 4, 5, 6, 7)) === true) {
             $insert = $this->deltas[count($this->deltas) - 1]->getInsert();
             unset($this->deltas[count($this->deltas) - 1]);
-            $this->deltas[] = new $this->class_delta_header(
-                $insert,
-                $quill['attributes']
-            );
+            $this->deltas[] = new $this->class_delta_header($insert, $quill['attributes']);
             // Reorder the array
             $this->deltas = array_values($this->deltas);
         }
@@ -478,10 +448,7 @@ abstract class Parse implements ParserInterface, ParserAttributeInterface
      */
     public function insert(array $quill)
     {
-        $this->deltas[] = new $this->class_delta_insert(
-            $quill['insert'],
-            (array_key_exists('attributes', $quill) ? $quill['attributes'] : [])
-        );
+        $this->deltas[] = new $this->class_delta_insert($quill['insert'], array_key_exists('attributes', $quill) ? $quill['attributes'] : []);
     }
 
     /**

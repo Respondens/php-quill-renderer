@@ -45,7 +45,6 @@ class Header extends Delta
     {
         $html = "<{$this->tag}>";
         if ($this->hasChildren() === true) {
-
             foreach ($this->children() as $child) {
                 $html .= $child->render();
             }

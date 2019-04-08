@@ -65,26 +65,17 @@ class Html extends Parse
      */
     public function attributeList(array $quill)
     {
-        if (
-            in_array(
-                $quill['attributes'][OPTIONS::ATTRIBUTE_LIST],
-                array('ordered', 'bullet')
-            ) === true
-        ) {
+        if (in_array($quill['attributes'][OPTIONS::ATTRIBUTE_LIST], array('ordered', 'bullet')) === true) {
             $previous_index = count($this->deltas) - 1;
-
             $insert = $this->deltas[$previous_index]->getInsert();
             $attributes = $this->deltas[$previous_index]->getAttributes();
-
             unset($this->deltas[$previous_index]);
-
             if (count($attributes) === 0) {
                 $this->deltas[] = new ListItem($insert, $quill['attributes']);
             } else {
                 $delta = new ListItem("", $quill['attributes']);
-
                 if (count($attributes) === 1) {
-                    switch(key($attributes)) {
+                    switch (key($attributes)) {
                         case Options::ATTRIBUTE_BOLD:
                             $delta->addChild(new Bold($insert));
                             break;
@@ -123,13 +114,12 @@ class Html extends Parse
                     }
                 } else {
                     $childDelta = new Compound($insert);
+
                     foreach ($attributes as $attribute => $value) {
                         $childDelta->setAttribute($attribute, $value);
                     }
-
                     $delta->addChild($childDelta);
                 }
-
                 $this->deltas[] = $delta;
             }
             $this->deltas = array_values($this->deltas);
@@ -175,44 +165,25 @@ class Html extends Parse
      */
     public function attributeHeader(array $quill)
     {
-        if (
-            in_array(
-                $quill['attributes'][OPTIONS::ATTRIBUTE_HEADER],
-                array(1, 2, 3, 4, 5, 6, 7)
-            ) === true
-        ) {
+        if (in_array($quill['attributes'][OPTIONS::ATTRIBUTE_HEADER], array(1, 2, 3, 4, 5, 6, 7)) === true) {
             $insert[] = $quill['insert'];
-
             $this->deltas = array_values($this->deltas);
-            $this->deltas[] = new $this->class_delta_header(
-                '',
-                $quill['attributes']
-            );
+            $this->deltas[] = new $this->class_delta_header('', $quill['attributes']);
             $current_index = count($this->deltas) - 1;
-
             for ($i = $current_index - 1; $i >= 0; $i--) {
                 $this_delta = $this->deltas[$i];
-                if (
-                    $this_delta->displayType() === Delta::DISPLAY_BLOCK
-                    ||
-                    $this_delta->newLine() === true
-                    ||
-                    $this_delta->close() === true
-                ) {
+                if ($this_delta->displayType() === Delta::DISPLAY_BLOCK || $this_delta->newLine() === true || $this_delta->close() === true) {
                     break;
-                } else if ($this_delta->hasAttributes() === true) {
-                    $this->deltas[$current_index]->addChild($this->deltas[$i]);
-                    unset($this->deltas[$i]);
                 } else {
-                    $this->deltas[$current_index]->addChild(
-                        new $this->class_delta_insert(
-                            $this->deltas[$i]->getInsert()
-                        )
-                    );
-                    unset($this->deltas[$i]);
+                    if ($this_delta->hasAttributes() === true) {
+                        $this->deltas[$current_index]->addChild($this->deltas[$i]);
+                        unset($this->deltas[$i]);
+                    } else {
+                        $this->deltas[$current_index]->addChild(new $this->class_delta_insert($this->deltas[$i]->getInsert()));
+                        unset($this->deltas[$i]);
+                    }
                 }
             }
-
             $this->deltas = array_values($this->deltas);
         }
     }
@@ -297,12 +268,10 @@ class Html extends Parse
     public function insert(array $quill)
     {
         $insert = $quill['insert'];
-
         /**
          * @var Delta
          */
-        $delta = new $this->class_delta_insert($insert, (array_key_exists('attributes', $quill) ? $quill['attributes'] : []));
-
+        $delta = new $this->class_delta_insert($insert, array_key_exists('attributes', $quill) ? $quill['attributes'] : []);
         if (preg_match("/[\n]{2,}/", $insert) !== 0) {
             $delta->setClose();
         } else {
@@ -310,7 +279,6 @@ class Html extends Parse
                 $delta->setNewLine();
             }
         }
-
         $this->deltas[] = $delta;
     }
 }
