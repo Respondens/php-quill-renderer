@@ -3,7 +3,7 @@
 namespace DBlackborough\Quill\Renderer;
 
 /**
- * Quill renderer, iterates over the Delta[] array to create the required HTML
+ * Quill renderer, iterates over the Delta[] array to create the required Markdown
  *
  * @author Dean Blackborough <dean@g3d-development.com>
  * @copyright Dean Blackborough

@@ -3,6 +3,42 @@
 
 Full changelog for PHP Quill Renderer
 
+## v3.17.2 - 2019-03-09
+
+* Additional work to fix [#117](https://github.com/deanblackborough/php-quill-renderer/issues/117),
+allow through any empty insert, some are valid so for now just render what quill wants, I'll 
+add strict mode later to remove what I consider to be the redundant inserts.
+
+## v3.17.1 - 2019-03-07
+
+* Fixed [#117](https://github.com/deanblackborough/php-quill-renderer/issues/117), compound
+deltas not aware of the fact that they can also be links.
+* Fixed [#109](https://github.com/deanblackborough/php-quill-renderer/issues/109) again as it 
+appears I did not fix it correctly before.
+
+## v3.17.0 - 2019-03-04
+
+* Handle custom color attribute in a better way, assign to style attribute if sensible, 
+thank you [Alex](https://github.com/AlexFence). Accepted PR as is, only handles colour, 
+will extend feature in v3.18.0.
+* Fixed [#108](https://github.com/deanblackborough/php-quill-renderer/issues/108), 
+links within headers not correctly rendering, headers now support child deltas.
+* Fixed [#109](https://github.com/deanblackborough/php-quill-renderer/issues/109), 
+not correctly closing paragraphs or detecting list type change.
+* Removed the `ParserSplitInterface` interface, no use anymore.
+* Changed which class implements `ParserAttributeInterface` interface.
+* Removed redundant methods from parsers.
+* Code formatting and comment corrections.
+
+## v3.16.0 - 2019-02-28
+
+* Reworked the parser, split deltas much sooner to try and simplify some of the later logic.
+* Return deltas pretty much exactly as defined, most of the new lines intact, I'm thinking about 
+adding a `strict` mode that will generate what I consider to be better HTML.
+* Update to the README explaining my plans for v4.
+* Reworked a couple of tests and removed one or two that I did not consider to be useful.
+* Coding standard correction thanks to [Lode Claassen](https://github.com/lode)
+
 ## v3.15.0 - 2018-10-25
 
 * Added support for `Color` delta type, it creates a span with a style="color: #xxx" definition, 
