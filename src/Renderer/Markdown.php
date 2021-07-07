@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace DBlackborough\Quill\Renderer;
 
@@ -36,14 +35,13 @@ class Markdown extends Render
      *
      * @return string
      */
-    public function render(bool $trim = false): string
+    public function render($trim = false)
     {
         $this->output = '';
 
         foreach ($this->deltas as $i => $delta) {
             $this->output .= $delta->render();
         }
-
         if ($trim === false) {
             return $this->output;
         } else {

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Html;
 
 use DBlackborough\Quill\Options;
@@ -45,10 +43,9 @@ class Compound extends Delta
      *
      * @param string $insert
      */
-    public function __construct(string $insert)
+    public function __construct($insert)
     {
         $this->insert = $insert;
-
         $this->tags = [];
         $this->element_attributes = [];
         $this->html = '';
@@ -57,7 +54,7 @@ class Compound extends Delta
     /**
      * Tags
      */
-    private function tags(): void
+    private function tags()
     {
         foreach ($this->attributes as $attribute => $value) {
             switch ($attribute) {
@@ -96,7 +93,7 @@ class Compound extends Delta
      *
      * @return Compound
      */
-    public function setAttribute($attribute, $value): Compound
+    public function setAttribute($attribute, $value)
     {
         if ($attribute !== 'link') {
             $this->attributes[$attribute] = $value;
@@ -113,18 +110,17 @@ class Compound extends Delta
      *
      * @return string
      */
-    public function render(): string
+    public function render()
     {
         $this->tags();
-
         if ($this->isLink === true) {
             $this->html .= "<a href=\"{$this->link}\">";
         }
-
         $element_attributes = '';
+
         foreach ($this->element_attributes as $attribute => $value) {
             if ($attribute == "color") {
-                $element_attributes .= "style=\"{$attribute}: $value\"";
+                $element_attributes .= "style=\"{$attribute}: {$value}\"";
             } else {
                 $element_attributes .= "{$attribute}=\"{$value}\" ";
             }
@@ -137,13 +133,11 @@ class Compound extends Delta
                 $this->html .= "<{$tag}>";
             }
         }
-
         $this->html .= $this->escape($this->insert);
 
         foreach (array_reverse($this->tags) as $tag) {
             $this->html .= "</{$tag}>";
         }
-
         if ($this->isLink === true) {
             $this->html .= '</a>';
         }
@@ -157,15 +151,12 @@ class Compound extends Delta
      *
      * @return array
      */
-    public function getAttributes(): array
+    public function getAttributes()
     {
         if ($this->isLink === false) {
             return $this->attributes;
         } else {
-            return array_merge(
-                ['link' => $this->link],
-                $this->attributes
-            );
+            return array_merge(['link' => $this->link], $this->attributes);
         }
     }
 }

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Markdown;
 
 use DBlackborough\Quill\Options;
@@ -23,13 +21,11 @@ class ListItem extends Delta
      * @param string $insert
      * @param array $attributes
      */
-    public function __construct(string $insert, array $attributes = [])
+    public function __construct($insert, array $attributes = [])
     {
         $this->insert = $insert;
         $this->attributes = $attributes;
-
         $this->token = null;
-
         if ($this->attributes['list'] === 'bullet') {
             $this->token = Options::MARKDOWN_TOKEN_LIST_ITEM_UNORDERED;
         }
@@ -42,7 +38,7 @@ class ListItem extends Delta
      *
      * @return Delta
      */
-    public function setCounter(int $counter): Delta
+    public function setCounter($counter)
     {
         $this->counter = $counter;
 
@@ -54,7 +50,7 @@ class ListItem extends Delta
      *
      * @return boolean
      */
-    public function isChild(): bool
+    public function isChild()
     {
         return true;
     }
@@ -64,22 +60,19 @@ class ListItem extends Delta
      *
      * @return string
      */
-    public function render(): string
+    public function render()
     {
         $output = '';
-
         if ($this->token === null) {
             $output .= $this->counter . ". ";
         } else {
             $output .= $this->token;
         }
-
         if ($this->hasChildren() === true) {
             foreach ($this->children() as $child) {
                 $output .= $child->render();
             }
         }
-
         $output .= $this->escape($this->insert);
 
         return $output;

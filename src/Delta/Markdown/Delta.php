@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Markdown;
 
 use DBlackborough\Quill\Delta\Delta as BaseDelta;
@@ -27,7 +25,7 @@ abstract class Delta extends BaseDelta
      *
      * @return boolean
      */
-    public function newLine(): bool
+    public function newLine()
     {
         return $this->new_line;
     }
@@ -37,7 +35,7 @@ abstract class Delta extends BaseDelta
      *
      * @return Delta
      */
-    public function setNewLine(): Delta
+    public function setNewLine()
     {
         if (preg_match("/[\n]{1}/", $this->insert) !== 0) {
             $this->new_line = true;
@@ -53,8 +51,8 @@ abstract class Delta extends BaseDelta
      *
      * @return string
      */
-    protected function escape(string $insert): string
+    protected function escape($insert)
     {
-        return str_replace(['*', '#'], ['\*', '\#'], $insert);
+        return str_replace(['*', '#'], ['\\*', '\\#'], $insert);
     }
 }

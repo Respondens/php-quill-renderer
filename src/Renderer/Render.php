@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace DBlackborough\Quill\Renderer;
 
@@ -45,7 +44,7 @@ abstract class Render implements RendererInterface
      *
      * @return Render
      */
-    public function load(array $deltas) : Render
+    public function load(array $deltas)
     {
         $this->deltas = $deltas;
 
@@ -59,5 +58,5 @@ abstract class Render implements RendererInterface
      *
      * @return string
      */
-    abstract public function render(bool $trim = false): string;
+    public abstract function render($trim = false);
 }

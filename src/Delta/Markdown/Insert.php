@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Markdown;
 
 /**
@@ -19,10 +17,9 @@ class Insert extends Delta
      * @param string $insert
      * @param array $attributes
      */
-    public function __construct(string $insert, array $attributes = [])
+    public function __construct($insert, array $attributes = [])
     {
         $this->token = null;
-
         $this->insert = $insert;
         $this->attributes = $attributes;
     }
@@ -32,7 +29,7 @@ class Insert extends Delta
      *
      * @return string
      */
-    public function render(): string
+    public function render()
     {
         return $this->escape($this->insert);
     }

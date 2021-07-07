@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace DBlackborough\Quill\Parser;
 
@@ -40,9 +39,7 @@ class Markdown extends Parse
     public function __construct()
     {
         parent::__construct();
-
         $this->counter = 1;
-
         $this->class_delta_bold = Bold::class;
         $this->class_delta_header = Header::class;
         $this->class_delta_image = Image::class;
@@ -65,9 +62,7 @@ class Markdown extends Parse
         if (in_array($quill['attributes'][OPTIONS::ATTRIBUTE_LIST], array('ordered', 'bullet')) === true) {
             $insert = $this->deltas[count($this->deltas) - 1]->getInsert();
             $attributes = $this->deltas[count($this->deltas) - 1]->getAttributes();
-
             unset($this->deltas[count($this->deltas) - 1]);
-
             if (count($attributes) === 0) {
                 $this->deltas[] = new ListItem($insert . "\n", $quill['attributes']);
             } else {
@@ -93,11 +88,8 @@ class Markdown extends Parse
                 }
                 $this->deltas[] = $delta;
             }
-
             $this->deltas = array_values($this->deltas);
-
             $current_index = count($this->deltas) - 1;
-
             for ($i = $current_index - 1; $i >= 0; $i--) {
                 $this_delta = $this->deltas[$i]->setNewLine();
                 if ($this_delta->newLine() === true) {
@@ -107,11 +99,9 @@ class Markdown extends Parse
                     unset($this->deltas[$i]);
                 }
             }
-
             $this->deltas = array_values($this->deltas);
             $current_index = count($this->deltas) - 1;
-            $previous_index = $current_index -1;
-
+            $previous_index = $current_index - 1;
             if ($previous_index < 0) {
                 $this->counter = 1;
                 $this->deltas[$current_index]->setFirstChild()->setCounter($this->counter);
@@ -197,7 +187,6 @@ class Markdown extends Parse
                 foreach ($quill['attributes'] as $attribute => $value) {
                     $delta->setAttribute($attribute, $value);
                 }
-
                 $this->deltas[] = $delta;
             }
         }
@@ -216,9 +205,10 @@ class Markdown extends Parse
         if (preg_match("/[\n]{2,}/", $quill['insert']) !== 0) {
             $sub_inserts = preg_split("/[\n]{2,}/", $quill['insert']);
             $i = 0;
+
             foreach ($sub_inserts as $match) {
                 $append = "\n\n";
-                if ($i === (count($sub_inserts)-1)) {
+                if ($i === count($sub_inserts) - 1) {
                     $append = null;
                 }
                 $this->deltas[] = new Insert($match . $append);
@@ -228,9 +218,10 @@ class Markdown extends Parse
             if (preg_match("/[\n]{1}/", $quill['insert']) !== 0) {
                 $sub_inserts = preg_split("/[\n]{1}/", $quill['insert']);
                 $i = 0;
+
                 foreach ($sub_inserts as $match) {
                     $append = "\n";
-                    if ($i === (count($sub_inserts)-1)) {
+                    if ($i === count($sub_inserts) - 1) {
                         $append = null;
                     }
                     $this->deltas[] = new Insert($match . $append);

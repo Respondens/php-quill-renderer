@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Html;
 
 /**
@@ -18,7 +16,7 @@ class CompoundImage extends Delta
      *
      * @param string $insert
      */
-    public function __construct(string $insert)
+    public function __construct($insert)
     {
         $this->insert = $insert;
     }
@@ -31,7 +29,7 @@ class CompoundImage extends Delta
      *
      * @return CompoundImage
      */
-    public function setAttribute($attribute, $value): CompoundImage
+    public function setAttribute($attribute, $value)
     {
         $this->attributes[$attribute] = $value;
 
@@ -43,12 +41,14 @@ class CompoundImage extends Delta
      *
      * @return string
      */
-    public function render(): string
+    public function render()
     {
         $image_attributes = '';
+
         foreach ($this->attributes as $attribute => $value) {
             $image_attributes .= "{$attribute}=\"{$value}\" ";
         }
+
         return "<img src=\"{$this->insert}\" {$image_attributes}/>";
     }
 }

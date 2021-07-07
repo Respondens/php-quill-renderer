@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace DBlackborough\Quill\Interfaces;
 
@@ -23,7 +22,7 @@ interface ParserInterface
      * @return Parse
      * @throws \InvalidArgumentException Throws an exception if there was an error decoding the json
      */
-    public function load(string $quill_json): Parse;
+    public function load($quill_json);
 
     /**
      * Load multiple delta strings, checks the json is valid for each index,
@@ -35,14 +34,14 @@ interface ParserInterface
      * @return Parse
      * @throws \InvalidArgumentException Throws an exception if there was an error decoding the json
      */
-    public function loadMultiple(array $quill_json): Parse;
+    public function loadMultiple(array $quill_json);
 
     /**
      * Parse the $quill_json array and generate an array of Delta[] objects
      *
      * @return boolean
      */
-    public function parse(): bool;
+    public function parse();
 
     /**
      * Parse the $quill_json_stack arrays and generate an indexed array of
@@ -50,14 +49,14 @@ interface ParserInterface
      *
      * @return boolean
      */
-    public function parseMultiple(): bool;
+    public function parseMultiple();
 
     /**
      * Return the array of Delta[] objects after a call to parse()
      *
      * @return array
      */
-    public function deltas(): array;
+    public function deltas();
 
     /**
      * Return a specific Delta[] objects array after a call to parseMultiple()
@@ -67,5 +66,5 @@ interface ParserInterface
      * @return array
      * @throws \OutOfRangeException
      */
-    public function deltasByIndex(string $index): array;
+    public function deltasByIndex($index);
 }
