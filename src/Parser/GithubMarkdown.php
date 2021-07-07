@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace DBlackborough\Quill\Parser;
 
@@ -21,7 +20,6 @@ class GithubMarkdown extends Markdown
     public function __construct()
     {
         parent::__construct();
-
         $this->class_delta_strike = Strike::class;
     }
 

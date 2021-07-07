@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Markdown;
 
 use DBlackborough\Quill\Options;
@@ -21,11 +19,10 @@ class Header extends Delta
      * @param string $insert
      * @param array $attributes
      */
-    public function __construct(string $insert, array $attributes = [])
+    public function __construct($insert, array $attributes = [])
     {
         $this->insert = $insert;
         $this->attributes = $attributes;
-
         $this->token = Options::MARKDOWN_TOKEN_HEADER;
     }
 
@@ -34,7 +31,7 @@ class Header extends Delta
      *
      * @return string
      */
-    public function displayType(): string
+    public function displayType()
     {
         return parent::DISPLAY_BLOCK;
     }
@@ -44,11 +41,10 @@ class Header extends Delta
      *
      * @return string
      */
-    public function render(): string
+    public function render()
     {
         $string = str_repeat('#', intval($this->attributes['header'])) . ' ';
         if ($this->hasChildren() === true) {
-
             foreach ($this->children() as $child) {
                 $string .= $child->render();
             }
@@ -56,10 +52,7 @@ class Header extends Delta
         $string .= "{$this->escape($this->insert)}";
 
         return $string;
-
-
-
         /*return str_repeat('#', intval($this->attributes['header'])) .
-            " {$this->escape($this->insert)}";*/
+          " {$this->escape($this->insert)}";*/
     }
 }

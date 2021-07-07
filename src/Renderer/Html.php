@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace DBlackborough\Quill\Renderer;
 
@@ -36,67 +35,39 @@ class Html extends Render
      *
      * @return string
      */
-    public function render(bool $trim = false): string
+    public function render($trim = false)
     {
         $this->output = '';
-
         $block_open = false;
 
         foreach ($this->deltas as $i => $delta) {
-            if (
-                $delta->displayType() === Delta::DISPLAY_INLINE &&
-                $block_open === false
-            ) {
+            if ($delta->displayType() === Delta::DISPLAY_INLINE && $block_open === false) {
                 $block_open = true;
                 $this->output .= '<p>';
             }
-
             if ($delta->isChild() === true && $delta->isFirstChild() === true) {
-
-                if (
-                    $block_open === true &&
-                    $this->deltas[$i - 1]->displayType() === Delta::DISPLAY_INLINE
-                ) {
+                if ($block_open === true && $this->deltas[$i - 1]->displayType() === Delta::DISPLAY_INLINE) {
                     $this->output .= "</p>\n";
                     $block_open = false;
                 }
-
                 $this->output .= '<' . $delta->parentTag() . ">\n";
             }
-
-            if (
-                $delta->displayType() === Delta::DISPLAY_BLOCK &&
-                $block_open === true
-            ) {
+            if ($delta->displayType() === Delta::DISPLAY_BLOCK && $block_open === true) {
                 $block_open = false;
                 $this->output .= "</p>\n";
             }
-
             $this->output .= $delta->render();
-
-            if (
-                $delta->displayType() === Delta::DISPLAY_INLINE &&
-                (
-                    $block_open === true &&
-                    $delta->close() === true
-                )
-            ) {
+            if ($delta->displayType() === Delta::DISPLAY_INLINE && ($block_open === true && $delta->close() === true)) {
                 $this->output .= "</p>\n";
                 $block_open = false;
             }
-
             if ($delta->isChild() === true && $delta->isLastChild() === true) {
                 $this->output .= '</' . $delta->parentTag() . ">\n";
             }
-
-            if (
-                $i === count($this->deltas) - 1 &&
-                $delta->displayType() === Delta::DISPLAY_INLINE && $block_open === true
-            ) {
+            if ($i === count($this->deltas) - 1 && $delta->displayType() === Delta::DISPLAY_INLINE && $block_open === true) {
                 $this->output .= "</p>\n";
             }
         }
-
         if ($trim === false) {
             return $this->output;
         } else {

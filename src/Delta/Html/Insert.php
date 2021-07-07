@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Html;
 
 /**
@@ -19,10 +17,9 @@ class Insert extends Delta
      * @param string $insert
      * @param array $attributes
      */
-    public function __construct(string $insert, array $attributes = [])
+    public function __construct($insert, array $attributes = [])
     {
         $this->tag = null;
-
         $this->insert = $insert;
         $this->attributes = $attributes;
     }
@@ -32,29 +29,26 @@ class Insert extends Delta
      *
      * @return string
      */
-    public function render(): string
+    public function render()
     {
         $html = '';
-
         $add_span = false;
         if (count($this->attributes) > 0) {
             $add_span = true;
         }
-
         if ($this->preNewLine() === true) {
             $html .= "<br />\n";
         }
-
         if ($add_span === false) {
             $html .= $this->escape($this->insert);
         } else {
             $html .= '<span';
-            foreach($this->attributes as $attribute => $value) {
+
+            foreach ($this->attributes as $attribute => $value) {
                 $html .= " {$attribute}=\"{$value}\"";
             }
             $html .= ">{$this->escape($this->insert)}</span>";
         }
-
         if ($this->newLine() === true) {
             $html .= "<br />\n";
         }

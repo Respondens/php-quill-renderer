@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace DBlackborough\Quill\Delta\Html;
 
 use DBlackborough\Quill\Options;
@@ -21,11 +19,10 @@ class ListItem extends Delta
      * @param string $insert
      * @param array $attributes
      */
-    public function __construct(string $insert, array $attributes = [])
+    public function __construct($insert, array $attributes = [])
     {
         $this->insert = $insert;
         $this->attributes = $attributes;
-
         $this->tag = Options::HTML_TAG_LIST_ITEM;
     }
 
@@ -34,7 +31,7 @@ class ListItem extends Delta
      *
      * @return string
      */
-    public function displayType(): string
+    public function displayType()
     {
         return parent::DISPLAY_BLOCK;
     }
@@ -44,7 +41,7 @@ class ListItem extends Delta
      *
      * @return boolean
      */
-    public function isChild(): bool
+    public function isChild()
     {
         return true;
     }
@@ -54,12 +51,13 @@ class ListItem extends Delta
      *
      * @return string|null
      */
-    public function parentTag(): ?string
+    public function parentTag()
     {
         switch ($this->attributes['list']) {
             case Options::ATTRIBUTE_LIST_ORDERED:
                 return Options::HTML_TAG_LIST_ORDERED;
                 break;
+
             case Options::ATTRIBUTE_LIST_BULLET:
                 return Options::HTML_TAG_LIST_UNORDERED;
                 break;
@@ -75,11 +73,10 @@ class ListItem extends Delta
      *
      * @return string
      */
-    public function render(): string
+    public function render()
     {
         $html = "<{$this->tag}>";
         if ($this->hasChildren() === true) {
-
             foreach ($this->children() as $child) {
                 $html .= $child->render();
             }
